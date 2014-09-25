@@ -4,7 +4,7 @@
   <title><![CDATA[小丹丹的程序博客]]></title>
   <link href="http://zhuangjun.github.io/atom.xml" rel="self"/>
   <link href="http://zhuangjun.github.io/"/>
-  <updated>2014-09-25T23:18:54+08:00</updated>
+  <updated>2014-09-25T23:46:51+08:00</updated>
   <id>http://zhuangjun.github.io/</id>
   <author>
     <name><![CDATA[Daniel Zhuang]]></name>
@@ -14,17 +14,11 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Hello Github]]></title>
-    <link href="http://zhuangjun.github.io/blog/2014/09/25/hello-github/"/>
-    <updated>2014-09-25T23:14:39+08:00</updated>
-    <id>http://zhuangjun.github.io/blog/2014/09/25/hello-github</id>
-    <content type="html"><![CDATA[<h1> Hello Github. </h1>
-
-
-
-
-<h2> Hello World. </h2>
-
+    <title type="html"><![CDATA[ORM in .NET - Dapper]]></title>
+    <link href="http://zhuangjun.github.io/blog/2014/09/25/orm-in-net-dapper/"/>
+    <updated>2014-09-25T23:46:16+08:00</updated>
+    <id>http://zhuangjun.github.io/blog/2014/09/25/orm-in-net-dapper</id>
+    <content type="html"><![CDATA[<p>biu biu</p>
 ]]></content>
   </entry>
   
