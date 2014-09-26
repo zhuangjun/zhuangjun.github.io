@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[小丹丹的程序博客]]></title>
-  <link href="http://zhuangjun.github.io/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Orm | 小丹丹的程序博客]]></title>
+  <link href="http://zhuangjun.github.io/blog/categories/orm/atom.xml" rel="self"/>
   <link href="http://zhuangjun.github.io/"/>
   <updated>2014-09-26T23:16:16+08:00</updated>
   <id>http://zhuangjun.github.io/</id>
