@@ -1,0 +1,114 @@
+---
+layout: post
+title: "Common used ORMs in dot net"
+date: 2014-09-26 22:19:02 +0800
+comments: true
+categories: .NET, ORM
+---
+
+ORM框架是web开发中不可缺少的，可以很方便的完成数据库对象到实体对象的mapping。最近研究了.NET里面常用的几个ORM框架，这里对他们进行一个简单的总结。
+
+
+####先来介绍几款轻量级的ORM
+
+* #### Dapper
+* #### PetaPoco
+* #### Massive
+
+## Dapper
+Github 地址: https://github.com/StackExchange/dapper-dot-net
+
+Dapper是个人在这几个轻量级ORM中最喜欢的一个。因为项目里面大量使用SP， dapper是这三个里面原生就支持SP的。Dapper基于Emit进行对象的mapping， 性能上也非常的不错。 它的github上有和其他ORM相比的详细的介绍。
+
+Dapper的API很简单，主要的API和sample如下：
+
++ Execute a query and map the results to a strongly typed List
+
+<pre><code>
+var dog = connection.Query<Dog>("select Age = @Age, Id = @Id", new { Age = (int?)null, Id = guid });
+</code></pre>
+
++ Execute a query and map it to a list of dynamic objects
+
+<pre><code>
+var rows = connection.Query("select 1 A, 2 B union all select 3, 4");
+</code></pre>
+
++ Multi Mapping
+
+<pre><code>
+var data = connection.Query<Post, User, Post>(sql, (post, user) => { post.Owner = user; return post;});
+</code></pre>
+
++ Multiple Results
+
+<pre><code>
+	var sql = 
+@"
+select * from Customers where CustomerId = @id
+select * from Orders where CustomerId = @id
+select * from Returns where CustomerId = @id";
+
+using (var multi = connection.QueryMultiple(sql, new {id=selectedId}))
+{
+   var customer = multi.Read<Customer>().Single();
+   var orders = multi.Read<Order>().ToList();
+   var returns = multi.Read<Return>().ToList();
+   ...
+} 
+</code></pre>
+
++ Execute a Command
+
+
+使用Dapper的时候建议数据库中select出来的对象名称和Model定义的名字一样。
+
+官方没有给出方案来自定义数据库字段和代码中Model字段不一致时候的mapping方法，如果确实需要， 可以参考github上有人写的自定义的mapper
+
+https://gist.github.com/kalebpederson/5460509
+
+给你的Model属性加上ColumnMapping("XX")的attribute， 然后再query的代码中指定使用自定义mapper
+
+<pre><code>
+public static IEnumerable<MyArea> LoadWithCustomMapping()
+{
+	using (var conn = OpenDBConnection())
+	{
+		Dapper.SqlMapper.SetTypeMap(typeof(MyArea), new ColumnAttributeTypeMapper<MyArea>());
+		return conn.Query<MyArea>("SELECT TOP 10 CAID,CAName,En FROM CityArea");
+	}
+}
+</code></pre>
+
+### Dapper 的CRUD
+
+Dapper 官方提供了Dapper.Contrib 和 Dapper.Rainbow 来直接对某一个强类型对象进行CRUD操作。
+
+但是由于Dapper.Contrib 没有 GetAll()的方法， Dapper.Rainbow 在做Update和Delete的时候， 数据库的table主键名必须为Id，对于已经建好的数据库， 就没法使用了。
+
+这里推荐另一个package， Dapper.SimpleCRUD， 可以通过attribute来设定Model对应的表名和主键名。
+
+Dapper.SimpleCRUD的地址： https://github.com/ericdc1/Dapper.SimpleCRUD/
+
+## PetaPoco
+
+	To be added
+
+## Massive
+	To be added
+
+<br/>
+
+#### 企业级的ORM
+
+* EntityFramework
+* NHibernate
+
+## EntityFramework
+
+## NHibernate
+
+
+
+
+
