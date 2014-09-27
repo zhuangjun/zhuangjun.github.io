@@ -4,7 +4,7 @@
   <title><![CDATA[小丹丹的程序博客]]></title>
   <link href="http://zhuangjun.github.io/atom.xml" rel="self"/>
   <link href="http://zhuangjun.github.io/"/>
-  <updated>2014-09-26T23:16:16+08:00</updated>
+  <updated>2014-09-27T21:42:44+08:00</updated>
   <id>http://zhuangjun.github.io/</id>
   <author>
     <name><![CDATA[Daniel Zhuang]]></name>
@@ -12,6 +12,53 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Dapper Emit]]></title>
+    <link href="http://zhuangjun.github.io/blog/2014/09/27/dapper-emit/"/>
+    <updated>2014-09-27T20:49:41+08:00</updated>
+    <id>http://zhuangjun.github.io/blog/2014/09/27/dapper-emit</id>
+    <content type="html"><![CDATA[<p>Dapper的github说明中说Dapper基于Emit，所以性能很高。 今天对这块稍微做了一下研究。</p>
+
+<h4>什么是Emit</h4>
+
+<p>Emit是.NET中可以在运行时动态产生IL代码的一种技术。</p>
+
+<p>Emit通过这些步骤来动态产生一个类或者方法</p>
+
+<ul>
+<li>创建一个新的程序集（程序集是动态的存在于内存中或把它们保存到磁盘上）。</li>
+<li>在程序集内部，创建一个模块（module）。</li>
+<li>在模块内部，创建一个类型。</li>
+<li>给类型添加属性和方法。</li>
+<li>产生属性和方法内部的代码</li>
+</ul>
+
+
+<p>更多的Emit简单的介绍可以参考<a href="http://www.cnblogs.com/cuihongyu3503319/archive/2009/12/01/1614298.html">这里</a></p>
+
+<p>Emit有点像Ruby中的元编程。 不过Emit是基于IL的， 写起来有点痛苦， 当然， 执行效率会很高。</p>
+
+<h4>Dapper query 的实现</h4>
+
+<ol>
+<li>根据query的CommandText，CommandType，return Type等生成一个Identity对象</li>
+<li>检查是否存在这个Identity对应的CacheInfo， 主要是IDbReader到Type的Deserializer</li>
+<li>如果不存在，通过Emit生成一个DynamicMethod. 首先拿到这个Type的ITypeMap. DefaultTypeMap是默认IDataReader里的字段和Type的PropertyName一致的。这里可以自定义TypeMap， 给Property通过Attribute来map到不同的Db column name。通过便利这些字段的mapping列表， 生成IDataReader中的column到Type property的赋值。</li>
+</ol>
+
+
+<p>然后将DynamicMethod.CreateDelegate Cache起来。</p>
+
+<p>所以Dapper的性能是很高的， 自定义的TypeMap也只会在没有cache的情况下执行一次， 所以不会有性能问题。</p>
+
+<p>和Emit相关的主要代码在这里：</p>
+
+<p><a href="https://github.com/StackExchange/dapper-dot-net/blob/master/Dapper%20NET40/SqlMapper.cs#L2144">GetDeserializer</a></p>
+
+<p><a href="https://github.com/StackExchange/dapper-dot-net/blob/master/Dapper%20NET40/SqlMapper.cs#L3490">GetTypeDeserializer</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Common Used ORMs in Dot Net]]></title>
